@@ -1,3 +1,4 @@
+%%writefile app.py
 
 import streamlit as st
 import pandas as pd
@@ -37,15 +38,24 @@ input_df = user_input()
 st.subheader("Your Input:")
 st.write(input_df)
 
+input_df = pd.get_dummies(input_df)
+
+model_features = model.feature_names_in_  
+missing_cols = [col for col in model_features if col not in input_df.columns]
+for col in missing_cols:
+    input_df[col] = 0  
+
+input_df = input_df[model_features]
+
 prediction = model.predict(input_df)
 risk_score = model.predict_proba(input_df)[0][1] * 100
 
 st.subheader("Prediction Result")
 if prediction[0] == 1:
-    st.error("⚠️ You are likely at risk of heart disease.")
+    st.error("You are likely at risk of heart disease.")
     st.write(f"Risk Score: **{risk_score:.2f}%**")
     st.markdown("- Risk factors: age, cholesterol, chest pain type")
-    st.info("📌 Please consult a doctor for confirmation.")
+    st.info("Please consult a doctor for confirmation.")
 else:
-    st.success("✅ You are likely not at risk.")
+    st.success("You are likely not at risk.")
     st.write(f"Risk Score: **{risk_score:.2f}%**")
