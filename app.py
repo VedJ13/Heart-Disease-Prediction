@@ -1,7 +1,7 @@
+
 import streamlit as st
 import pandas as pd
 import joblib
-import matplotlib.pyplot as plt
 
 # Load model
 model = joblib.load('heartsense_model.pkl')
@@ -33,27 +33,31 @@ def user_input():
 
     return pd.DataFrame(data, index=[0])
 
-# User input
 input_df = user_input()
-# Expand categorical features like training
-input_df = pd.get_dummies(input_df, columns=['cp', 'thal', 'slope'], drop_first=True)
-
-# Add missing columns (if any) so order matches
-for col in model.feature_names_in_:
-    if col not in input_df.columns:
-        input_df[col] = 0
-
-# Ensure same column order
-input_df = input_df[model.feature_names_in_]
-
 st.subheader("Your Input:")
 st.write(input_df)
 
-# Prediction
-# use only values to avoid feature name mismatch
-prediction = model.predict(input_df.values)
-risk_score = model.predict_proba(input_df.values)[0][1] * 100
+input_df = pd.get_dummies(input_df)
 
+model_features = model.feature_names_in_  
+missing_cols = [col for col in model_features if col not in input_df.columns]
+for col in missing_cols:
+    input_df[col] = 0  
+
+input_df = input_df[model_features]
+
+prediction = model.predict(input_df)
+risk_score = model.predict_proba(input_df)[0][1] * 100
+
+st.subheader("Prediction Result")
+if prediction[0] == 1:
+    st.error("You are likely at risk of heart disease.")
+    st.write(f"Risk Score: **{risk_score:.2f}%**")
+    st.markdown("- Risk factors: age, cholesterol, chest pain type")
+    st.info("Please consult a doctor for confirmation.")
+else:
+    st.success("You are likely not at risk.")
+    st.write(f"Risk Score: **{risk_score:.2f}%**")
 
 # ---------- Feature 1: Risk Level Categorization ----------
 def get_risk_level(score):
@@ -112,12 +116,3 @@ elif risk_level == "Medium Risk":
     st.warning("⚠️ Consider regular health check-ups, monitor cholesterol, and maintain a healthy lifestyle.")
 else:
     st.error("🚨 Immediate consultation with a doctor is recommended. Focus on reducing cholesterol and BP.")
-
-# ---------- Feature 6: Future Scope ----------
-st.subheader("Future Enhancements")
-st.markdown("""
-- 📊 Integration with wearable devices (Fitbit, Smartwatches) for real-time monitoring  
-- 🌐 Connection with hospital EMR systems  
-- 🤖 Use of advanced models (Random Forest, Neural Networks) for better accuracy  
-- 📱 Mobile app version for easy accessibility  
-""")
