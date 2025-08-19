@@ -39,8 +39,10 @@ st.subheader("Your Input:")
 st.write(input_df)
 
 # Prediction
-prediction = model.predict(input_df)
-risk_score = model.predict_proba(input_df)[0][1] * 100
+# use only values to avoid feature name mismatch
+prediction = model.predict(input_df.values)
+risk_score = model.predict_proba(input_df.values)[0][1] * 100
+
 
 # ---------- Feature 1: Risk Level Categorization ----------
 def get_risk_level(score):
