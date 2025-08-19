@@ -35,6 +35,17 @@ def user_input():
 
 # User input
 input_df = user_input()
+# Expand categorical features like training
+input_df = pd.get_dummies(input_df, columns=['cp', 'thal', 'slope'], drop_first=True)
+
+# Add missing columns (if any) so order matches
+for col in model.feature_names_in_:
+    if col not in input_df.columns:
+        input_df[col] = 0
+
+# Ensure same column order
+input_df = input_df[model.feature_names_in_]
+
 st.subheader("Your Input:")
 st.write(input_df)
 
