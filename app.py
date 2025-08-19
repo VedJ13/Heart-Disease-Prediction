@@ -59,6 +59,7 @@ else:
     st.success("You are likely not at risk.")
     st.write(f"Risk Score: **{risk_score:.2f}%**")
 
+"""
 # ---------- Feature 1: Risk Level Categorization ----------
 def get_risk_level(score):
     if score < 40:
@@ -116,3 +117,4 @@ elif risk_level == "Medium Risk":
     st.warning("⚠️ Consider regular health check-ups, monitor cholesterol, and maintain a healthy lifestyle.")
 else:
     st.error("🚨 Immediate consultation with a doctor is recommended. Focus on reducing cholesterol and BP.")
+"""
