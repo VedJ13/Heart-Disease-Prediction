@@ -59,62 +59,62 @@ else:
     st.success("You are likely not at risk.")
     st.write(f"Risk Score: **{risk_score:.2f}%**")
 
-"""
+
 # ---------- Feature 1: Risk Level Categorization ----------
-def get_risk_level(score):
-    if score < 40:
-        return "Low Risk"
-    elif score < 70:
-        return "Medium Risk"
-    else:
-        return "High Risk"
+# def get_risk_level(score):
+#     if score < 40:
+#         return "Low Risk"
+#     elif score < 70:
+#         return "Medium Risk"
+#     else:
+#         return "High Risk"
 
-risk_level = get_risk_level(risk_score)
+# risk_level = get_risk_level(risk_score)
 
-st.subheader("Prediction Result")
-if prediction[0] == 1:
-    st.error("⚠️ You are likely at risk of heart disease.")
-else:
-    st.success("✅ You are likely not at risk.")
-st.write(f"**Risk Score:** {risk_score:.2f}% ({risk_level})")
+# st.subheader("Prediction Result")
+# if prediction[0] == 1:
+#     st.error("⚠️ You are likely at risk of heart disease.")
+# else:
+#     st.success("✅ You are likely not at risk.")
+# st.write(f"**Risk Score:** {risk_score:.2f}% ({risk_level})")
 
-# ---------- Feature 2: Important Feature Highlights ----------
-st.subheader("Key Risk Factors")
-try:
-    coef = model.coef_[0]
-    feature_importance = pd.Series(coef, index=input_df.columns).sort_values(key=abs, ascending=False)
-    st.write("Top contributing features:")
-    st.write(feature_importance.head(3))
-except:
-    st.info("Feature importance is only available for linear models (Logistic Regression).")
+# # ---------- Feature 2: Important Feature Highlights ----------
+# st.subheader("Key Risk Factors")
+# try:
+#     coef = model.coef_[0]
+#     feature_importance = pd.Series(coef, index=input_df.columns).sort_values(key=abs, ascending=False)
+#     st.write("Top contributing features:")
+#     st.write(feature_importance.head(3))
+# except:
+#     st.info("Feature importance is only available for linear models (Logistic Regression).")
 
-# ---------- Feature 3: Visual Risk Dashboard ----------
-st.subheader("Your Health Dashboard")
-fig, ax = plt.subplots(1, 2, figsize=(10, 4))
+# # ---------- Feature 3: Visual Risk Dashboard ----------
+# st.subheader("Your Health Dashboard")
+# fig, ax = plt.subplots(1, 2, figsize=(10, 4))
 
-# Cholesterol comparison
-ax[0].bar(["Your Chol", "Healthy Max"], [input_df['chol'][0], 200], color=['red', 'green'])
-ax[0].set_title("Cholesterol (mg/dl)")
+# # Cholesterol comparison
+# ax[0].bar(["Your Chol", "Healthy Max"], [input_df['chol'][0], 200], color=['red', 'green'])
+# ax[0].set_title("Cholesterol (mg/dl)")
 
-# Blood Pressure comparison
-ax[1].bar(["Your BP", "Healthy Max"], [input_df['trestbps'][0], 130], color=['red', 'green'])
-ax[1].set_title("Resting BP (mmHg)")
+# # Blood Pressure comparison
+# ax[1].bar(["Your BP", "Healthy Max"], [input_df['trestbps'][0], 130], color=['red', 'green'])
+# ax[1].set_title("Resting BP (mmHg)")
 
-st.pyplot(fig)
+# st.pyplot(fig)
 
-# ---------- Feature 4: Downloadable Report ----------
-st.subheader("Download Your Report")
-report = input_df.copy()
-report["Risk Score (%)"] = risk_score
-report["Prediction"] = "At Risk" if prediction[0] == 1 else "Not at Risk"
-st.download_button("📥 Download as CSV", report.to_csv(index=False).encode('utf-8'), "HeartSense_Report.csv", "text/csv")
+# # ---------- Feature 4: Downloadable Report ----------
+# st.subheader("Download Your Report")
+# report = input_df.copy()
+# report["Risk Score (%)"] = risk_score
+# report["Prediction"] = "At Risk" if prediction[0] == 1 else "Not at Risk"
+# st.download_button("📥 Download as CSV", report.to_csv(index=False).encode('utf-8'), "HeartSense_Report.csv", "text/csv")
 
-# ---------- Feature 5: Health Tips ----------
-st.subheader("Health Tips")
-if risk_level == "Low Risk":
-    st.success("👍 Maintain a balanced diet, exercise regularly, and keep monitoring your health.")
-elif risk_level == "Medium Risk":
-    st.warning("⚠️ Consider regular health check-ups, monitor cholesterol, and maintain a healthy lifestyle.")
-else:
-    st.error("🚨 Immediate consultation with a doctor is recommended. Focus on reducing cholesterol and BP.")
-"""
+# # ---------- Feature 5: Health Tips ----------
+# st.subheader("Health Tips")
+# if risk_level == "Low Risk":
+#     st.success("👍 Maintain a balanced diet, exercise regularly, and keep monitoring your health.")
+# elif risk_level == "Medium Risk":
+#     st.warning("⚠️ Consider regular health check-ups, monitor cholesterol, and maintain a healthy lifestyle.")
+# else:
+#     st.error("🚨 Immediate consultation with a doctor is recommended. Focus on reducing cholesterol and BP.")
+# 
