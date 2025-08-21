@@ -71,6 +71,46 @@ else:
 st.write(f"Risk Score: **{risk_score:.2f}%**")
 st.write(f"Risk Level: **{risk_level}**")
 
+# --- Healthy Ranges Reference ---
+healthy_ranges = {
+    "age": (20, 50),              # ideal working-age range (example, not medical advice)
+    "trestbps": (90, 120),        # normal resting blood pressure (mm Hg)
+    "chol": (125, 200),           # desirable cholesterol (mg/dL)
+    "thalach": (100, 170),        # normal max heart rate range (varies with age)
+    "oldpeak": (0.0, 1.0)         # normal ST depression
+}
+
+# --- Comparison Chart ---
+st.subheader("📉 Your Values vs Healthy Ranges")
+
+# Prepare data
+compare_data = []
+for feature, (low, high) in healthy_ranges.items():
+    user_value = input_df.iloc[0][feature] if feature in input_df.columns else None
+    compare_data.append({
+        "Feature": feature,
+        "User Value": user_value,
+        "Healthy Min": low,
+        "Healthy Max": high
+    })
+
+compare_df = pd.DataFrame(compare_data)
+
+# Plot
+fig2, ax2 = plt.subplots(figsize=(6,4))
+for i, row in compare_df.iterrows():
+    ax2.plot([row["Healthy Min"], row["Healthy Max"]], [i, i], color="green", linewidth=5, label="Healthy Range" if i==0 else "")
+    ax2.scatter(row["User Value"], i, color="red", zorder=5, label="Your Value" if i==0 else "")
+
+ax2.set_yticks(range(len(compare_df)))
+ax2.set_yticklabels(compare_df["Feature"])
+ax2.set_xlabel("Value")
+ax2.set_title("Comparison of User Inputs with Healthy Ranges")
+ax2.legend()
+st.pyplot(fig2)
+
+st.dataframe(compare_df)  # Optional table for clarity
+
 # Visual Risk Dashboard
 st.subheader("📊 Visual Risk Dashboard")
 fig, ax = plt.subplots()
