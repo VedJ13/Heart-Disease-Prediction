@@ -64,13 +64,20 @@ def categorize_risk(score):
 risk_level = categorize_risk(risk_score)
 
 st.subheader("Prediction Result")
-if prediction[0] == 1:
-    st.error("⚠️ You are likely at risk of heart disease.")
-else:
-    st.success("✅ You are likely not at risk.")
+
+if risk_level == "Low Risk":
+    st.success("✅ You are at Low Risk of heart disease.")
+    st.info("Keep maintaining a healthy lifestyle with regular exercise and balanced diet.")
+elif risk_level == "Moderate Risk":
+    st.warning("⚠️ You are at Moderate Risk of heart disease.")
+    st.info("Consider consulting a doctor and adopting preventive measures.")
+else:  # High Risk
+    st.error("🚨 You are at High Risk of heart disease.")
+    st.warning("It is strongly advised to consult a healthcare professional immediately.")
 
 st.write(f"Risk Score: **{risk_score:.2f}%**")
 st.write(f"Risk Level: **{risk_level}**")
+
 
 st.subheader("📊 Your Health Dashboard")
 
