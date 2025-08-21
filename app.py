@@ -74,6 +74,68 @@ st.write(f"Risk Level: **{risk_level}**")
 
 
 
+import plotly.graph_objects as go
+
+# Define healthy ranges (min, max)
+healthy_ranges = {
+    'age': (20, 50),
+    'trestbps': (80, 120),
+    'chol': (150, 240),
+    'thalach': (120, 180),
+    'oldpeak': (0.0, 2.0)
+}
+
+# Extract user values
+user_values = {
+    'age': int(input_df['age']),
+    'trestbps': int(input_df['trestbps']),
+    'chol': int(input_df['chol']),
+    'thalach': int(input_df['thalach']),
+    'oldpeak': float(input_df['oldpeak'])
+}
+
+fig = go.Figure()
+
+# Add healthy range as bars
+for feature, (low, high) in healthy_ranges.items():
+    fig.add_trace(go.Bar(
+        x=[feature],
+        y=[high - low],
+        base=low,
+        name=f"Healthy Range",
+        marker_color='lightgreen',
+        opacity=0.6
+    ))
+
+# Add user values as points
+fig.add_trace(go.Scatter(
+    x=list(user_values.keys()),
+    y=list(user_values.values()),
+    mode='markers+lines',
+    name="Your Value",
+    marker=dict(size=12, color='red', symbol='diamond')
+))
+
+# Layout
+fig.update_layout(
+    title="🔍 Your Health Parameters vs Healthy Ranges",
+    yaxis_title="Value",
+    barmode='overlay',
+    template="plotly_white",
+    height=500
+)
+
+st.plotly_chart(fig)
+
+
+
+
+
+
+
+
+
+
 st.subheader("📊 Your Health Dashboard")
 
 # Cholesterol Gauge
