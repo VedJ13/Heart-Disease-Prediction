@@ -72,9 +72,7 @@ else:
 st.write(f"Risk Score: **{risk_score:.2f}%**")
 st.write(f"Risk Level: **{risk_level}**")
 
-
-
-import plotly.graph_objects as go
+st.subheader("📊 Your Health Dashboard")
 
 # Define healthy ranges (min, max)
 healthy_ranges = {
@@ -128,15 +126,6 @@ fig.update_layout(
 st.plotly_chart(fig)
 
 
-
-
-
-
-
-
-
-
-st.subheader("📊 Your Health Dashboard")
 
 # Cholesterol Gauge
 cholesterol_gauge = go.Figure(go.Indicator(
@@ -207,12 +196,12 @@ for i, row in compare_df.iterrows():
     ax2.plot([row["Healthy Min"], row["Healthy Max"]], [i, i], color="green", linewidth=5, label="Healthy Range" if i==0 else "")
     ax2.scatter(row["User Value"], i, color="red", zorder=5, label="Your Value" if i==0 else "")
 
-ax2.set_yticks(range(len(compare_df)))
-ax2.set_yticklabels(compare_df["Feature"])
-ax2.set_xlabel("Value")
-ax2.set_title("Comparison of User Inputs with Healthy Ranges")
-ax2.legend()
-st.pyplot(fig2)
+# ax2.set_yticks(range(len(compare_df)))
+# ax2.set_yticklabels(compare_df["Feature"])
+# ax2.set_xlabel("Value")
+# ax2.set_title("Comparison of User Inputs with Healthy Ranges")
+# ax2.legend()
+# st.pyplot(fig2)
 
 st.dataframe(compare_df)  # Optional table for clarity
 
