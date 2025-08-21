@@ -2,6 +2,7 @@ import streamlit as st
 import pandas as pd
 import joblib
 import matplotlib.pyplot as plt
+import plotly.graph_objects as go
 from io import BytesIO
 
 # Load model
@@ -70,6 +71,48 @@ else:
 
 st.write(f"Risk Score: **{risk_score:.2f}%**")
 st.write(f"Risk Level: **{risk_level}**")
+
+
+
+st.subheader("📊 Your Health Dashboard")
+
+# Cholesterol Gauge
+cholesterol_gauge = go.Figure(go.Indicator(
+    mode = "gauge+number",
+    value = input_df['chol'][0],
+    title = {'text': "Cholesterol (mg/dL)"},
+    gauge = {
+        'axis': {'range': [0, 400]},
+        'bar': {'color': "red" if input_df['chol'][0] > 200 else "green"},
+        'steps': [
+            {'range': [0, 200], 'color': "lightgreen"},
+            {'range': [200, 400], 'color': "lightcoral"}
+        ]
+    }
+))
+
+# Blood Pressure Gauge
+bp_gauge = go.Figure(go.Indicator(
+    mode = "gauge+number",
+    value = input_df['trestbps'][0],
+    title = {'text': "Resting BP (mmHg)"},
+    gauge = {
+        'axis': {'range': [0, 200]},
+        'bar': {'color': "red" if input_df['trestbps'][0] > 130 else "green"},
+        'steps': [
+            {'range': [0, 130], 'color': "lightgreen"},
+            {'range': [130, 200], 'color': "lightcoral"}
+        ]
+    }
+))
+
+# Show in Streamlit
+st.plotly_chart(cholesterol_gauge, use_container_width=True)
+st.plotly_chart(bp_gauge, use_container_width=True)
+
+
+
+
 
 # --- Healthy Ranges Reference ---
 healthy_ranges = {
