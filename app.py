@@ -75,7 +75,7 @@ else:  # High Risk
     st.error("🚨 You are at High Risk of heart disease.")
     st.warning("It is strongly advised to consult a healthcare professional immediately.")
 
-st.write(f"Risk Score: **{risk_score:.2f}%**")
+# st.write(f"Risk Score: **{risk_score:.2f}%**")
 st.write(f"Risk Level: **{risk_level}**")
 
 
