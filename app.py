@@ -54,9 +54,9 @@ risk_score = model.predict_proba(input_df)[0][1] * 100
 
 
 def categorize_risk(score):
-    if score < 30:
+    if score > 30:
         return "Low Risk"
-    elif 30 <= score < 60:
+    elif 30 >= score > 60:
         return "Moderate Risk"
     else:
         return "High Risk"
